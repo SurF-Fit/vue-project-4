@@ -1,5 +1,4 @@
 import { createStore } from 'vuex';
-import { dispatch } from 'vuex'
 import { getProducts } from '@/api/products';
 
 
@@ -13,13 +12,36 @@ export default createStore({
   getters: {
     isAuthenticated: (state) => !!state.token,
     isNotAuthenticated: (state) => !state.token,
-    cartItems: (state) => state.cart,
-    cartItemCount: (state) => state.cart.length,
+    cartItems(state) {
+      return state.cart;
+    },
+    cartItemCount(state) {
+      return state.cart.reduce((total, item) => total + item.length, 0);
+    },
   },
   mutations: {
+    PLASS_ITEM(state, productId) {
+      const item = state.cart.find(item => item.id === productId);
+      if (item) {
+        item.length += 1;
+      }
+    },
+    MINUS_ITEM(state, productId) {
+      const item = state.cart.find(item => item.id === productId);
+      if (item && item.length > 1) {
+        item.length -= 1;
+      } else if (item) {
+        state.cart = state.cart.filter(item => item.id !== productId); // Удаляем, если количество 0
+      }
+    },
     ADD_TO_CART(state, product) {
-      state.cart.push(product);
-      alert("продукт добавлен в корзину")
+      const existingProduct = state.cart.find(item => item.id === product.id);
+      if (existingProduct) {
+        existingProduct.length += 1;
+      } else {
+        state.cart.push({ ...product, length: 1 });
+      }
+      alert("Продукт добавлен в корзину");
     },
     LOAD_CART(state, products) {
       state.cart = products;
@@ -50,6 +72,14 @@ export default createStore({
     },
   },
   actions: {
+    plassItem({ commit, dispatch }, productId) {
+      commit('PLASS_ITEM', productId);
+      dispatch('saveData');
+    },
+    minusItem({ commit, dispatch }, productId) {
+      commit('MINUS_ITEM', productId);
+      dispatch('saveData');
+    },
     saveData({ state }) {
       localStorage.setItem('ПростоКупить', JSON.stringify(state.cart));
     },
