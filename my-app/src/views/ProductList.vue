@@ -14,6 +14,7 @@
         <h2 class="product-name">{{ product.name }}</h2>
         <p class="product-description">{{ product.description }}</p>
         <p class="product-price">Цена: {{ product.price.toFixed(2) }} руб.</p>
+        <button @click="addToCart(product)">Добавить в корзину</button>
       </div>
     </div>
   </div>
@@ -21,6 +22,7 @@
 
 <script>
 import axios from 'axios';
+import { mapActions } from 'vuex';
 
 export default {
   data() {
@@ -30,7 +32,14 @@ export default {
       errorMessage: '',
     };
   },
+  props: {
+    product: {
+      type: Object,
+      required: true,
+    },
+  },
   methods: {
+    ...mapActions(['addToCart']),
     getFullImageUrl(imagePath) {
       const baseUrl = 'http://lifestealer86.ru/';
       const fullUrl = baseUrl + imagePath;
@@ -72,10 +81,18 @@ export default {
 }
 
 .product-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   border: 1px solid #ccc;
   border-radius: 5px;
   padding: 10px;
   width: 300px;
+}
+
+.product-card button {
+  width: 40%;
+  margin: 0 auto;
 }
 
 .product-image {
@@ -83,5 +100,3 @@ export default {
   height: auto;
 }
 </style>
-
-Найти еще

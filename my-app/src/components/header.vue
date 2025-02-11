@@ -8,12 +8,36 @@
       <router-link to="/basket">Корзина</router-link>
       <router-link to="/completeOrders">Оформленные заказы</router-link>
     </div>
+    <div>
+      <p>Корзина {{ cartItemCount  }}</p>
+    </div>
   </header>
 </template>
+
+<script>
+import { mapGetters } from 'vuex';
+
+export default {
+  props: {
+    products: {
+      type: Array,
+      required: true,
+    },
+  },
+  computed: {
+    ...mapGetters(['cartItemCount']),
+  },
+  name: 'HeaderList',
+};
+</script>
 
 <style scoped>
 
 header {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  gap: 25%;
   background-color: #f8f8f8;
 }
 
@@ -40,9 +64,3 @@ router-link:hover {
   text-decoration: underline;
 }
 </style>
-
-<script>
-export default {
-  name: 'HeaderList',
-};
-</script>
