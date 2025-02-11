@@ -32,13 +32,12 @@ export default {
   },
   methods: {
     getFullImageUrl(imagePath) {
-      const baseUrl = 'http://lifestealer86.ru/'; // Замените на ваш базовый URL
+      const baseUrl = 'http://lifestealer86.ru/';
       const fullUrl = baseUrl + imagePath;
-      console.log('Полный URL изображения:', fullUrl);
       return fullUrl;
     },
     handleImageError(event) {
-      event.target.src = ''; // Оставляем пустое место
+      event.target.src = '';
       console.error('Ошибка загрузки изображения:', event.target.src);
     },
     async fetchProducts() {
@@ -47,17 +46,10 @@ export default {
           headers: {
             'Accept': 'application/json',
           },
-          maxRedirects: 0 // Отключает автоматические редиректы
+          maxRedirects: 0
         });
-        console.log('Статус ответа:', response.status);
-        console.log('Данные из API:', response.data);
-        this.products = response.data.data; // Извлекаем массив продуктов
+        this.products = response.data.data;
       } catch (error) {
-        console.error('Ошибка при запросе:', error);
-        if (error.response) {
-          console.log('Статус ошибки:', error.response.status);
-          console.log('Данные ошибки:', error.response.data);
-        }
         this.errorMessage = 'Ошибка при загрузке продуктов: ' + (error.response?.data?.message || error.message);
       } finally {
         this.isLoading = false;
@@ -76,6 +68,7 @@ export default {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
+  justify-content: center;
 }
 
 .product-card {

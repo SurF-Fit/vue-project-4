@@ -1,7 +1,7 @@
 <template>
   <header>
     <div class="wrapper">
-      <router-link to="/">Главная</router-link>
+      <router-link to="/"><img src="../assets/корзина.png" alt="корзина"></router-link>
       <router-link to="/products">Каталог товаров</router-link>
       <router-link to="/register">Регистрация</router-link>
       <router-link to="/login">Авторизация</router-link>
@@ -11,11 +11,24 @@
   </header>
 </template>
 
-<style>
+<style scoped>
+
+header {
+  background-color: #f8f8f8;
+}
+
+img {
+  width: 35px;
+  height: 35px;
+}
+
 .wrapper {
-  margin: 0 auto;
-  gap: 20px;
   display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 25px;
+  padding-top: 30px;
+  padding-bottom: 30px;
 }
 
 router-link {
