@@ -1,34 +1,73 @@
+import { createRouter, createWebHistory } from 'vue-router';
+import store from '../store/store'; // Импорт store
+
+import basket from "../views/basket.vue";
+import completedOrders from "../views/completedOrders.vue";
+import HomeView from "../views/HomeView.vue";
+import ProductList from "../views/ProductList.vue";
+import register from "../views/register.vue";
+
+// Проверка, не аутентифицирован ли пользователь
 const ifNotAuthenticated = (to, from, next) => {
-    if (!store.getters.inNotAuthenticated) {
+    if (!store.getters.isAuthenticated) {
         next();
-        return;
+    } else {
+        next('/'); // Перенаправляем на главную страницу, если пользователь аутентифицирован
     }
-    next('/');
 };
 
+// Проверка, аутентифицирован ли пользователь
 const ifAuthenticated = (to, from, next) => {
-    if (!store.getters.inAuthenticated) {
+    if (store.getters.isAuthenticated) {
         next();
-        return;
+    } else {
+        next('/login'); // Перенаправляем на страницу входа, если пользователь не аутентифицирован
     }
-    next('/login');
 };
 
 const routes = [
     {
         path: '/',
-        name: 'home',
-        component: function () {
-            return import('../views/HomeView.vue');
+        name: 'Home',
+        component: HomeView,
+    },
+    {
+        path: '/basket',
+        name: 'basket',
+        component: basket,
+        meta: {
+            layout: "basket",
         },
-        beforeEnter: ifAuthenticated,
+    },
+    {
+        path: '/completeOrders',
+        name: 'completeOrders',
+        component: completedOrders,
+        meta: {
+            layout: "completedOrders",
+        },
     },
     {
         path: '/login',
         name: 'login',
-        component: function () {
-            return import('../components/Login.vue');
-        },
-        beforeEnter: ifNotAuthenticated,
+        component: () => import('../views/Login.vue'),
+        beforeEnter: ifNotAuthenticated, // Только для неаутентифицированных пользователей
     },
-]
+    {
+        path: '/register',
+        name: 'register',
+        component: register,
+    },
+    {
+        path: '/products',
+        name: 'products',
+        component: ProductList,
+    },
+];
+
+const router = createRouter({
+    history: createWebHistory(process.env.BASE_URL),
+    routes,
+});
+
+export default router;

@@ -1,5 +1,4 @@
-import Vue from 'vue';
-import { createStore } from 'vuex'
+import { createStore } from 'vuex';
 import { getProducts } from '@/api/products';
 
 export default createStore({
@@ -10,6 +9,7 @@ export default createStore({
   },
   getters: {
     isAuthenticated: (state) => !!state.token,
+    isNotAuthenticated: (state) => !state.token, // Добавлен геттер
   },
   mutations: {
     SET_PRODUCTS(state, products) {
@@ -25,6 +25,9 @@ export default createStore({
     AUTH_SUCCESS: (state, token) => {
       state.token = token;
     },
+    AUTH_ERROR: (state) => { // Добавлена мутация
+      state.token = '';
+    },
   },
   actions: {
     async fetchProducts({ commit }) {
@@ -39,15 +42,15 @@ export default createStore({
         commit('SET_LOADING', false);
       }
     },
-    AUTH_REQUEST: ({commit}, user) => {
+    AUTH_REQUEST: ({ commit }, user) => {
       return new Promise((resolve, reject) => {
         loginRequest(user)
             .then((token) => {
-              commit('AUTH_REQUEST', token);
+              commit('AUTH_SUCCESS', token);
               localStorage.setItem('myAppToken', token);
               resolve();
             })
-            .cache(() => {
+            .catch(() => { // Исправлено на .catch
               commit('AUTH_ERROR');
               localStorage.removeItem('myAppToken');
               reject();
@@ -57,4 +60,4 @@ export default createStore({
   },
   modules: {
   }
-})
+});

@@ -1,15 +1,18 @@
 <template>
   <div id="app">
-    <ProductList />
+    <div id="nav">
+      <header-list />
+    </div>
+    <router-view />
   </div>
 </template>
 
 <script>
-import ProductList from '@/components/ProductList.vue';
+import headerList from '@/components/header.vue';
 
 export default {
   components: {
-    ProductList,
+    headerList,
   },
 };
 </script>

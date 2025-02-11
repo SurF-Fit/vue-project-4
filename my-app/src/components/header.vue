@@ -1,11 +1,12 @@
 <template>
   <header>
     <div class="wrapper">
-      <a href="#">Каталог товаров</a>
-      <a href="#">Регистрация</a>
-      <a href="#">Авторизация</a>
-      <a href="#">Корзина</a>
-      <a href="#">Оформленные заказы</a>
+      <router-link to="/">Главная</router-link>
+      <router-link to="/products">Каталог товаров</router-link>
+      <router-link to="/register">Регистрация</router-link>
+      <router-link to="/login">Авторизация</router-link>
+      <router-link to="/basket">Корзина</router-link>
+      <router-link to="/completeOrders">Оформленные заказы</router-link>
     </div>
   </header>
 </template>
@@ -17,16 +18,18 @@
   display: flex;
 }
 
-a{
+router-link {
   color: black;
   text-decoration: none;
 }
 
-a:hover {
+router-link:hover {
   text-decoration: underline;
 }
 </style>
 
 <script>
-
+export default {
+  name: 'HeaderList',
+};
 </script>
