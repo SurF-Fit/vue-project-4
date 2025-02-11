@@ -5,6 +5,7 @@ import { getProducts } from '@/api/products';
 export default createStore({
   state: {
     products: [],
+    completedOrders: [],
     isLoading: false,
     cart: [],
     token: localStorage.getItem('myAppToken') || '',
@@ -18,8 +19,17 @@ export default createStore({
     cartItemCount(state) {
       return state.cart.reduce((total, item) => total + item.length, 0);
     },
+    completedOrders(state) {
+      return state.completedOrders;
+    },
   },
   mutations: {
+    ADD_COMPLETED_ORDER(state, order) {
+      state.completedOrders.push(order);
+    },
+    LOAD_ORDER(state, completedOrders) {
+      state.completedOrders = completedOrders;
+    },
     PLASS_ITEM(state, productId) {
       const item = state.cart.find(item => item.id === productId);
       if (item) {
@@ -31,7 +41,7 @@ export default createStore({
       if (item && item.length > 1) {
         item.length -= 1;
       } else if (item) {
-        state.cart = state.cart.filter(item => item.id !== productId); // Удаляем, если количество 0
+        state.cart = state.cart.filter(item => item.id !== productId);
       }
     },
     ADD_TO_CART(state, product) {
@@ -54,14 +64,18 @@ export default createStore({
       state.cart = [];
       alert("Корзина почищена")
     },
+    CLEAR_ORDER(state) {
+      state.completedOrders = [];
+      alert("Корзина почищена")
+    },
     SET_PRODUCTS(state, products) {
       state.products = products;
-      state.errorMessage = null; // Сбрасываем сообщение об ошибке
+      state.errorMessage = null;
     },
     SET_LOADING(state, isLoading) {
       state.isLoading = isLoading;
     },
-    SET_ERROR(state, error) { // Новая мутация для установки ошибки
+    SET_ERROR(state, error) {
       state.errorMessage = error;
     },
     AUTH_SUCCESS: (state, token) => {
@@ -72,6 +86,15 @@ export default createStore({
     },
   },
   actions: {
+    completeOrder({ commit, state, dispatch }) {
+      const order = {
+        id: Date.now(),
+        items: [...state.cart],
+      };
+      commit('ADD_COMPLETED_ORDER', order);
+      commit('CLEAR_CART');
+      dispatch('saveData');
+    },
     plassItem({ commit, dispatch }, productId) {
       commit('PLASS_ITEM', productId);
       dispatch('saveData');
@@ -82,6 +105,7 @@ export default createStore({
     },
     saveData({ state }) {
       localStorage.setItem('ПростоКупить', JSON.stringify(state.cart));
+      localStorage.setItem('ОформленныеЗаказы', JSON.stringify(state.completedOrders));
     },
     addToCart({ commit, dispatch  }, product) {
       commit('ADD_TO_CART', product);
@@ -89,8 +113,12 @@ export default createStore({
     },
     loadData({ commit }) {
       const savedData = localStorage.getItem('ПростоКупить');
+      const savedDataOrder = localStorage.getItem('ОформленныеЗаказы');
       if (savedData) {
         commit('LOAD_CART', JSON.parse(savedData));
+      }
+      if(savedDataOrder){
+        commit('LOAD_ORDER', JSON.parse(savedDataOrder));
       }
     },
     removeFromCart({ commit, dispatch  }, productId) {
@@ -100,6 +128,10 @@ export default createStore({
     },
     clearCart({ commit, dispatch  }) {
       commit('CLEAR_CART');
+      dispatch('saveData');
+    },
+    clearOreder({ commit, dispatch }) {
+      commit('CLEAR_ORDER')
       dispatch('saveData');
     },
     async fetchProducts({ commit }) {

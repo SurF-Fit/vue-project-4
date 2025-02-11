@@ -26,8 +26,12 @@ export default {
   },
   mounted() {
     const savedData = localStorage.getItem('ПростоКупить');
+    const savedDataOrder = localStorage.getItem('ОформленныеЗаказы');
     if (savedData) {
       this.products = JSON.parse(savedData);
+    }
+    if(savedDataOrder){
+      this.completedOrders = JSON.parse(savedDataOrder);
     }
   }
 };

@@ -12,7 +12,7 @@
     </ul>
     <div class="button">
       <button @click="clearCart">Очистить корзину</button>
-      <button @click="">Оформить заказ</button>
+      <button @click="completeOrder">Оформить заказ</button>
     </div>
   </div>
 </template>
@@ -56,7 +56,7 @@ export default {
     ...mapGetters(['cartItems', 'cartItemCount']),
   },
   methods: {
-    ...mapActions(['removeFromCart', 'clearCart', 'plassItem', 'minusItem']),
+    ...mapActions(['removeFromCart', 'clearCart', 'plassItem', 'minusItem', 'completeOrder']),
     getImageUrl(imagePath) {
       const baseUrl = 'http://lifestealer86.ru/';
       return `${baseUrl}${imagePath}`;
