@@ -3,8 +3,8 @@
     <div class="wrapper">
       <router-link to="/"><img src="../assets/корзина.png" alt="корзина"></router-link>
       <router-link to="/products">Каталог товаров</router-link>
-      <router-link to="/register">Регистрация</router-link>
-      <router-link to="/login">Авторизация</router-link>
+      <router-link style="display: flex; flex-direction: column" to="/register">Регистрация<sub style="font-size: 8px">не работает</sub></router-link>
+      <router-link style="display: flex; flex-direction: column" to="/login">Авторизация<sub style="font-size: 8px">не работает</sub></router-link>
       <router-link to="/basket">Корзина</router-link>
       <router-link to="/completeOrders">Оформленные заказы</router-link>
     </div>

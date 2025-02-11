@@ -10,7 +10,10 @@
         <button @click="removeFromCart(item.id)">Удалить</button>
       </li>
     </ul>
-    <button @click="clearCart">Очистить корзину</button>
+    <div class="button">
+      <button @click="clearCart">Очистить корзину</button>
+      <button @click="">Оформить заказ</button>
+    </div>
   </div>
 </template>
 
@@ -30,6 +33,12 @@
   button{
     background-color: white;
     width: max-content;
+  }
+
+  .button {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
   }
 
   button:hover{
