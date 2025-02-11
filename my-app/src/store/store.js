@@ -1,5 +1,7 @@
 import { createStore } from 'vuex';
+import { dispatch } from 'vuex'
 import { getProducts } from '@/api/products';
+
 
 export default createStore({
   state: {
@@ -17,12 +19,18 @@ export default createStore({
   mutations: {
     ADD_TO_CART(state, product) {
       state.cart.push(product);
+      alert("продукт добавлен в корзину")
+    },
+    LOAD_CART(state, products) {
+      state.cart = products;
     },
     REMOVE_FROM_CART(state, productId) {
       state.cart = state.cart.filter(item => item.id !== productId);
+      alert("продукт удален из корзины")
     },
     CLEAR_CART(state) {
       state.cart = [];
+      alert("Корзина почищена")
     },
     SET_PRODUCTS(state, products) {
       state.products = products;
@@ -42,14 +50,27 @@ export default createStore({
     },
   },
   actions: {
-    addToCart({ commit }, product) {
+    saveData({ state }) {
+      localStorage.setItem('ПростоКупить', JSON.stringify(state.cart));
+    },
+    addToCart({ commit, dispatch  }, product) {
       commit('ADD_TO_CART', product);
+      dispatch('saveData');
     },
-    removeFromCart({ commit }, productId) {
+    loadData({ commit }) {
+      const savedData = localStorage.getItem('ПростоКупить');
+      if (savedData) {
+        commit('LOAD_CART', JSON.parse(savedData));
+      }
+    },
+    removeFromCart({ commit, dispatch  }, productId) {
       commit('REMOVE_FROM_CART', productId);
+      this.cart[productId].splice(productId, 1);
+      dispatch('saveData');
     },
-    clearCart({ commit }) {
+    clearCart({ commit, dispatch  }) {
       commit('CLEAR_CART');
+      dispatch('saveData');
     },
     async fetchProducts({ commit }) {
       commit('SET_LOADING', true);

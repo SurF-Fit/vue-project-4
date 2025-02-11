@@ -14,7 +14,7 @@
         <h2 class="product-name">{{ product.name }}</h2>
         <p class="product-description">{{ product.description }}</p>
         <p class="product-price">Цена: {{ product.price.toFixed(2) }} руб.</p>
-        <button @click="addToCart(product)">Добавить в корзину</button>
+        <button @click="addProductToCart(product)">Добавить в корзину</button>
       </div>
     </div>
   </div>
@@ -35,11 +35,13 @@ export default {
   props: {
     product: {
       type: Object,
-      required: true,
     },
   },
   methods: {
     ...mapActions(['addToCart']),
+    addProductToCart(product) {
+      this.addToCart(product);
+    },
     getFullImageUrl(imagePath) {
       const baseUrl = 'http://lifestealer86.ru/';
       const fullUrl = baseUrl + imagePath;

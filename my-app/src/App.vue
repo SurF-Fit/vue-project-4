@@ -24,6 +24,12 @@ export default {
   methods: {
 
   },
+  mounted() {
+    const savedData = localStorage.getItem('ПростоКупить');
+    if (savedData) {
+      this.products = JSON.parse(savedData);
+    }
+  }
 };
 </script>
 
