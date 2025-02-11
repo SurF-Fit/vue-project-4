@@ -2,8 +2,8 @@
   <div>
     <h2>Оформленные заказы</h2>
     <button @click="clearOreder">Очистить</button>
-    <ul>
-      <li v-for="order in completedOrders" :key="order.id">
+    <ul class="box">
+      <li class="cart" v-for="order in completedOrders" :key="order.id">
         <h3>Заказ #{{ order.id }}</h3>
         <ul>
           <li v-for="item in order.items" :key="item.id">
@@ -33,5 +33,30 @@ export default {
 </script>
 
 <style scoped>
-/* Добавьте стили по вашему усмотрению */
+
+  ul {
+    padding: 0;
+  }
+
+  li{
+    padding: 0;
+    list-style: none;
+  }
+
+  .cart{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid black;
+    width: max-content;
+    padding: 10px;
+  }
+
+  .box {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
 </style>

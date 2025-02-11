@@ -123,7 +123,6 @@ export default createStore({
     },
     removeFromCart({ commit, dispatch  }, productId) {
       commit('REMOVE_FROM_CART', productId);
-      this.cart[productId].splice(productId, 1);
       dispatch('saveData');
     },
     clearCart({ commit, dispatch  }) {
